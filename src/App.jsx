@@ -1,17 +1,15 @@
+import "./App.css";
+
 import { useContext, useState } from "react";
-import {
-  SignedIn,
-  SignedOut,
-  SignInButton,
-  UserButton,
-} from "@clerk/clerk-react";
 import { Navigate, Route, Routes } from "react-router";
 import HomePage from "./pages/HomePages.jsx";
-
-import "./App.css";
 import Navbar from "./components/Navbar.jsx";
-import New from "./components/New.jsx";
 import { myContext } from "./context/contextProvider.jsx";
+import { Toaster } from "react-hot-toast";
+import ProblemsPage from "./pages/ProblemsPage.jsx";
+import ProblemPage from "./pages/ProblemPage.jsx";
+import DashboardPage from "./pages/Dashboard.jsx";
+import SessionPage from "./pages/SessionPage.jsx";
 
 function App() {
   const data = useContext(myContext);
@@ -25,26 +23,26 @@ function App() {
           path="/"
           element={!data ? <HomePage /> : <Navigate to={"/dashboard"} />}
         />
-        {/* <Route
+        <Route
           path="/dashboard"
-          element={isSignedIn ? <DashboardPage /> : <Navigate to={"/"} />}
-        /> */}
+          element={data ? <DashboardPage /> : <Navigate to={"/"} />}
+        />
 
-        {/* <Route
+        <Route
           path="/problems"
-          element={isSignedIn ? <ProblemsPage /> : <Navigate to={"/"} />}
-        /> */}
-        {/* <Route
+          element={data ? <ProblemsPage /> : <Navigate to={"/"} />}
+        />
+        <Route
           path="/problem/:id"
-          element={isSignedIn ? <ProblemPage /> : <Navigate to={"/"} />}
-        /> */}
-        {/* <Route
+          element={data ? <ProblemPage /> : <Navigate to={"/"} />}
+        />
+        <Route
           path="/session/:id"
-          element={isSignedIn ? <SessionPage /> : <Navigate to={"/"} />}
-        /> */}
+          element={data ? <SessionPage /> : <Navigate to={"/"} />}
+        />
       </Routes>
 
-      {/* <Toaster toastOptions={{ duration: 3000 }} /> */}
+      <Toaster toastOptions={{ duration: 3000 }} />
     </>
   );
 }
