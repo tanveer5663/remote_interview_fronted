@@ -7,8 +7,8 @@ export const authApi = {
     return response.data;
   },
 
-  signIn: async () => {
-    const response = await axiosInstance.get("/auth/signin");
+  signIn: async (data) => {
+    const response = await axiosInstance.post("/auth/login", data);
     return response.data;
   },
   checkAuth: async () => {
@@ -16,8 +16,8 @@ export const authApi = {
     return response.data;
   },
 
-  logout: async (id) => {
-    const response = await axiosInstance.get(`/auth/logout/${id}`);
+  logout: async () => {
+    const response = await axiosInstance.post("/auth/logout");
     return response.data;
   },
 };

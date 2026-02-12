@@ -1,35 +1,90 @@
-import React, { useContext } from "react";
-import { Link, useLocation } from "react-router";
+import React, { useContext, useState } from "react";
+import { Link, useLocation, useNavigate } from "react-router";
 import {
   ArrowRightIcon,
-  CheckIcon,
-  Code2Icon,
   SparklesIcon,
-  UsersIcon,
-  VideoIcon,
-  ZapIcon,
   BookOpenIcon,
   LayoutDashboardIcon,
-  LogOutIcon,
   LogOut,
   LoaderIcon,
 } from "lucide-react";
+import { myContext } from "../context/contextProvider.jsx";
 
 import { authApi } from "../api/auth";
 
 function Navbar({ data }) {
-  // const checkauth = async () => {
-  //   try {
-  //     const res = await authApi.signUp({
-  //       email: "example@example.com",
-  //       name: "Tanveer",
-  //       password: "tanveer",
-  //     });
-  //   } catch (error) {
-  //     console.error("Error checking auth:", error);
-  //   }
-  // };
+  const { setUserData } = useContext(myContext);
+  const [authData, setAuthData] = useState({
+    name: "",
+    email: "",
+    password: "",
+    isLoading: false,
+    errorMessage: "",
+  });
+  const [isSigningUp, setIsSigningUp] = useState(false);
 
+  const handlAuth = async (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    console.log(authData);
+    if (
+      !authData.email ||
+      !authData.password ||
+      (isSigningUp && !authData.name)
+    ) {
+      setAuthData((prev) => ({
+        ...prev,
+        errorMessage: "All fields are required",
+      }));
+      return;
+    }
+
+    setAuthData((prev) => ({ ...prev, isLoading: true, errorMessage: "" }));
+
+    try {
+      let res;
+      if (isSigningUp) {
+        res = await authApi.signUp({
+          email: authData.email,
+          name: authData.name || authData.email.split("@")[0],
+          password: authData.password,
+        });
+      } else {
+        res = await authApi.signIn({
+          email: authData.email,
+          password: authData.password,
+        });
+      }
+
+      console.log("Auth response:", res);
+      document.getElementById("my_modal_2").close();
+      setUserData(res?.data);
+    } catch (error) {
+      // console.error("Error checking auth:", error);
+      console.error(
+        "Error checking auth:",
+        error?.response?.data?.message || error.message,
+      );
+      const err = error?.response?.data?.message;
+      console.log(err);
+
+      setAuthData((prev) => ({
+        ...prev,
+        errorMessage: err || "Failed to sign up. Please try again.",
+      }));
+    } finally {
+      setAuthData((prev) => ({ ...prev, isLoading: false }));
+    }
+  };
+  const logout = async () => {
+    try {
+      await authApi.logout();
+
+      window.location.href = "/"; // Redirect to home page after logout
+    } catch (error) {
+      console.error("Error during logout:", error);
+    }
+  };
   const location = useLocation();
 
   const isActive = (path) => location.pathname === path;
@@ -115,6 +170,7 @@ function Navbar({ data }) {
                 <LogOut
                   className="h-8 w-8 cursor-pointer   transition-all duration-500 hover:scale-110   "
                   strokeWidth={2.6}
+                  onClick={logout}
                 />
               </>
             )}
@@ -127,11 +183,11 @@ function Navbar({ data }) {
             <div className="w-full h-full rounded-2xl p-6  ">
               {/* Title */}
               <h2 className="text-2xl font-bold text-white text-center">
-                Sign In
+                {isSigningUp ? "Sign Up" : "Sign In"}
               </h2>
 
               {/* Google Button */}
-              <button className="mt-4 flex w-full items-center justify-center gap-2 rounded-lg border border-white/10 bg-[#181818] px-4 py-3 text-sm font-medium text-white hover:bg-[#1f1f1f] transition">
+              {/* <button className="mt-4 flex w-full items-center justify-center gap-2 rounded-lg border border-white/10 bg-[#181818] px-4 py-3 text-sm font-medium text-white hover:bg-[#1f1f1f] transition">
                 <svg className="h-5 w-5 text-green-500" viewBox="0 0 48 48">
                   <path
                     fill="currentColor"
@@ -139,54 +195,96 @@ function Navbar({ data }) {
                   />
                 </svg>
                 Continue with Google
-              </button>
+              </button> */}
 
               {/* Divider */}
-              <div className="my-5 flex items-center gap-3">
+              {/* <div className="my-5 flex items-center gap-3">
                 <div className="h-px flex-1 bg-white/10" />
                 <span className="text-xs text-zinc-500">OR</span>
                 <div className="h-px flex-1 bg-white/10" />
-              </div>
+              </div> */}
 
               {/* Form */}
-              <div className="space-y-4">
-                <div>
-                  <label className="text-sm text-zinc-200">Email</label>
-                  <input
-                    type="email"
-                    placeholder="name@example.com"
-                    className="mt-1 w-full rounded-lg border border-white/10 bg-[#181818] px-4 py-3 text-sm text-white placeholder:text-zinc-500 focus:outline-none focus:border-green-500"
-                  />
-                </div>
+              <form>
+                <div className="space-y-4">
+                  {isSigningUp && (
+                    <div>
+                      <label className="text-sm text-zinc-200">Name</label>
+                      <input
+                        type="text"
+                        placeholder="Your Name"
+                        autoComplete="name"
+                        className="mt-1 w-full rounded-lg border border-white/10 bg-[#181818] px-4 py-3 text-sm text-white placeholder:text-zinc-500 focus:outline-none focus:border-green-500"
+                        onChange={(e) =>
+                          setAuthData((prev) => ({
+                            ...prev,
+                            name: e.target.value,
+                            errorMessage: "",
+                          }))
+                        }
+                      />
+                    </div>
+                  )}
+                  <div>
+                    <label className="text-sm text-zinc-200">Email</label>
+                    <input
+                      type="email"
+                      placeholder="name@example.com"
+                      autoComplete="email"
+                      className="mt-1 w-full rounded-lg border border-white/10 bg-[#181818] px-4 py-3 text-sm text-white placeholder:text-zinc-500 focus:outline-none focus:border-green-500"
+                      onChange={(e) =>
+                        setAuthData((prev) => ({
+                          ...prev,
+                          email: e.target.value,
+                          errorMessage: "",
+                        }))
+                      }
+                    />
+                  </div>
 
-                <div className="mb-2">
-                  <label className="text-sm text-zinc-200">Password</label>
-                  <input
-                    type="password"
-                    placeholder="Password"
-                    className="mt-1 w-full rounded-lg border border-white/10 bg-[#181818] px-4 py-3 text-sm text-white placeholder:text-zinc-500 focus:outline-none focus:border-green-500"
-                  />
-                </div>
-                <p className="text-sm text-red-500 min-h-5 ">
-                  *Required all field
-                </p>
+                  <div className="mb-2">
+                    <label className="text-sm text-zinc-200">Password</label>
+                    <input
+                      type="password"
+                      placeholder="Password"
+                      autoComplete="current-password"
+                      className="mt-1 w-full rounded-lg border border-white/10 bg-[#181818] px-4 py-3 text-sm text-white placeholder:text-zinc-500 focus:outline-none focus:border-green-500"
+                      onChange={(e) =>
+                        setAuthData((prev) => ({
+                          ...prev,
+                          password: e.target.value,
+                          errorMessage: "",
+                        }))
+                      }
+                    />
+                  </div>
+                  <p className="text-sm text-red-500 min-h-5 ">
+                    {authData.errorMessage && "*Required all field"}
+                  </p>
 
-                {/* Submit */}
-                <button className="group w-full px-6 py-3 bg-gradient-to-r from-primary to-secondary rounded-xl text-white font-semibold text-sm shadow-lg hover:shadow-xl   cursor-pointer">
-                  Sign in
-                  <LoaderIcon className="size-5 animate-spin" />
-                </button>
-              </div>
+                  {/* Submit */}
+                  <button
+                    className="group w-full px-6 py-3 bg-gradient-to-r from-primary to-secondary rounded-xl text-white font-semibold text-sm shadow-lg hover:shadow-xl   cursor-pointer flex items-center justify-center"
+                    onClick={handlAuth}
+                    disabled={authData.isLoading}
+                  >
+                    {authData.isLoading && (
+                      <LoaderIcon className="size-5 animate-spin mr-3" />
+                    )}
+                    <span>Sign In</span>
+                  </button>
+                </div>
+              </form>
 
               {/* Footer */}
               <p className="mt-5 text-center text-sm text-zinc-400">
                 Don’t have an account?{" "}
-                <a
-                  href="/signup"
-                  className=" bg-gradient-to-r from-primary to-secondary text-transparent bg-clip-text hover:underline font-bold"
+                <span
+                  className=" bg-gradient-to-r from-primary to-secondary text-transparent bg-clip-text hover:underline font-bold cursor-pointer "
+                  onClick={() => setIsSigningUp((prev) => !prev)}
                 >
-                  Sign up
-                </a>
+                  {isSigningUp ? "Sign In" : "Sign Up"}
+                </span>
               </p>
             </div>
           </div>

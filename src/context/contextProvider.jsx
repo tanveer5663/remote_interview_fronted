@@ -11,7 +11,7 @@ function ContextProvider({ children }) {
         const data = await authApi.checkAuth();
 
         console.log("Auth Check Data:", data);
-        setUserData(data.data);
+        setUserData(data?.data);
       } catch (error) {
         if (error.response) {
           console.error("Data:", error.response.data);
@@ -28,7 +28,11 @@ function ContextProvider({ children }) {
   if (loading) {
     return null;
   }
-  return <myContext.Provider value={userData}>{children}</myContext.Provider>;
+  return (
+    <myContext.Provider value={{ userData, setUserData }}>
+      {children}
+    </myContext.Provider>
+  );
 }
 export { myContext };
 

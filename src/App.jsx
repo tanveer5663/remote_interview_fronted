@@ -12,33 +12,32 @@ import DashboardPage from "./pages/Dashboard.jsx";
 import SessionPage from "./pages/SessionPage.jsx";
 
 function App() {
-  const data = useContext(myContext);
+  const { userData } = useContext(myContext);
 
   return (
     <>
-      <Navbar data={data} />
-
+      <Navbar data={userData} />
       <Routes>
         <Route
           path="/"
-          element={!data ? <HomePage /> : <Navigate to={"/dashboard"} />}
+          element={!userData ? <HomePage /> : <Navigate to={"/dashboard"} />}
         />
         <Route
           path="/dashboard"
-          element={data ? <DashboardPage /> : <Navigate to={"/"} />}
+          element={userData ? <DashboardPage /> : <Navigate to={"/"} />}
         />
 
         <Route
           path="/problems"
-          element={data ? <ProblemsPage /> : <Navigate to={"/"} />}
+          element={userData ? <ProblemsPage /> : <Navigate to={"/"} />}
         />
         <Route
           path="/problem/:id"
-          element={data ? <ProblemPage /> : <Navigate to={"/"} />}
+          element={userData ? <ProblemPage /> : <Navigate to={"/"} />}
         />
         <Route
           path="/session/:id"
-          element={data ? <SessionPage /> : <Navigate to={"/"} />}
+          element={userData ? <SessionPage /> : <Navigate to={"/"} />}
         />
       </Routes>
 

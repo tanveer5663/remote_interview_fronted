@@ -43,11 +43,9 @@ function HeroSection() {
 
           {/* CTA Buttons */}
           <div className="flex flex-wrap gap-4">
-            <button>
-              <button className="btn btn-primary btn-lg">
-                Start Coding Now
-                <ArrowRightIcon className="size-5" />
-              </button>
+            <button className="btn btn-primary btn-lg">
+              Start Coding Now
+              <ArrowRightIcon className="size-5" />
             </button>
 
             <button className="btn btn-outline btn-lg">

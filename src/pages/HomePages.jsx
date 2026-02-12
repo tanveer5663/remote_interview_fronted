@@ -7,9 +7,9 @@ function HomePages() {
       {/* HERO SECTION */}
       
 
-      {/* <HeroSection /> */}
+      <HeroSection />
       {/* FEATURES SECTION */}
-      {/* <FeatureSetion /> */}
+      <FeatureSetion />
     </div>
   );
 }

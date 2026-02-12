@@ -80,7 +80,7 @@ function ActiveSessions({ sessions, isLoading, isUserInSession }) {
                             {session.participant ? "2/2" : "1/2"}
                           </span>
                         </div>
-                        {session.participant && !isUserInSession(session) ? (
+                        {session?.participant && !isUserInSession(session) ? (
                           <span className="badge badge-error badge-sm">
                             FULL
                           </span>

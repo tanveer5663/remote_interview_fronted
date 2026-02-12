@@ -18,22 +18,20 @@ function Dashboard() {
     activeSessions: [],
     recentSessions: [],
   });
-  const data = useContext(myContext);
+  const { userData } = useContext(myContext);
 
   const handleCreateRoom = async () => {
     if (!roomConfig.problem || !roomConfig.difficulty) return;
 
     try {
-      const data = await sessionApi.createSession({
+      const apiData = await sessionApi.createSession({
         problem: roomConfig.problem,
         difficulty: roomConfig.difficulty.toLowerCase(),
       });
 
-      console.log("Session created Data:", data);
+      console.log("Session created Data:", apiData);
 
-      // navigate(`/session/${data.data.session._id}`);
-
-      // setUserData(data.data);
+      navigate(`/session/${apiData?.data?._id}`);
     } catch (error) {
       if (error.response) {
         console.error("Data:", error.response.data);
@@ -47,13 +45,15 @@ function Dashboard() {
   };
 
   const isUserInSession = (session) => {
-    // console.log(session);
-    if (!data._id) return false;
-    return (
-      session.host?.clerkId === data._id ||
-      session.participant?.clerkId === data._id
-    );
+    console.log("dashboard session isUserInSession", session);
+    if (!userData._id) return false;
+    const isHost =
+      session.host?.clerkId === userData._id ||
+      session.participant?.clerkId === userData._id;
+    console.log("check", isHost);
+    return isHost;
   };
+  console.log("first");
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -80,7 +80,7 @@ function Dashboard() {
       <div className="min-h-screen bg-base-300">
         <WelcomeSection
           onCreateSession={() => setShowCreateModal(true)}
-          userData={data}
+          userData={userData}
         />
 
         {/* Grid layout */}
