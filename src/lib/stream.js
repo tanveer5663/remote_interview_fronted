@@ -11,6 +11,7 @@ export const initializeStreamClient = async (user, token) => {
   if (client && client?.user?.id === user.id) return client;
 
   if (client) {
+    console.log("disconnect clinet")
     await disconnectStreamClient();
   }
 

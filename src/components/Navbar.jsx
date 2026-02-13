@@ -259,7 +259,7 @@ function Navbar({ data }) {
                     />
                   </div>
                   <p className="text-sm text-red-500 min-h-5 ">
-                    {authData.errorMessage && "*Required all field"}
+                    {authData?.errorMessage}
                   </p>
 
                   {/* Submit */}

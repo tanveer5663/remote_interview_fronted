@@ -18,16 +18,18 @@ function WelcomeSection({ onCreateSession, userData }) {
               Ready to level up your coding skills?
             </p>
           </div>
-          <button
-            onClick={onCreateSession}
-            className="group px-8 py-4 bg-gradient-to-r from-primary to-secondary rounded-2xl transition-all duration-200 hover:opacity-90"
-          >
-            <div className="flex items-center gap-3 text-white font-bold text-lg">
-              <ZapIcon className="w-6 h-6" />
-              <span>Create Session</span>
-              <ArrowRightIcon className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
-            </div>
-          </button>
+          {userData?.role === "admin" && (
+            <button
+              onClick={onCreateSession}
+              className="group px-8 py-4 bg-gradient-to-r from-primary to-secondary rounded-2xl transition-all duration-200 hover:opacity-90"
+            >
+              <div className="flex items-center gap-3 text-white font-bold text-lg">
+                <ZapIcon className="w-6 h-6" />
+                <span>Create Session</span>
+                <ArrowRightIcon className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+              </div>
+            </button>
+          )}
         </div>
       </div>
     </div>

@@ -33,8 +33,30 @@ function SessionPage() {
   console.log("isParticipant", isParticipant);
   const { call, channel, chatClient, isInitializingCall, streamClient } =
     useStreamClient(session, sessionData?.isLoading, isHost, isParticipant);
+  console.log("stremc", streamClient);
 
-  //   console.log("problem data", problemData);
+  const senMessage = async () => {
+    console.log("i am a snd message");
+    console.log("call", call.id);
+    console.log("stream id", channel);
+    console.log("chatclien", chatClient);
+
+    if (!channel) {
+      toast.error("Chat channel is not ready");
+      return;
+    }
+    try {
+      await channel.sendMessage({
+        text: "User raised hand ✋",
+        customType: "raise-hand",
+        senderId: streamClient.userID,
+        timestamp: new Date().toISOString(),
+      });
+    } catch (error) {
+      toast.error("Failed to send message");
+      console.error("Error sending message", error);
+    }
+  };
 
   useEffect(() => {
     try {
@@ -48,6 +70,27 @@ function SessionPage() {
       setIsRunning(false);
     }
   }, []);
+  useEffect(() => {
+    if (!channel || !streamClient) return;
+    const handleEvent = (event) => {
+      console.log("event", event);
+      const message = event.message;
+      if (message.customType === "raise-hand") {
+
+         console.log("User raised hand:", message.text);
+
+        // Yaha tum action perform kar sakte ho
+        alert("Incoming Call 🚀");
+
+        // Example: call join karna
+        
+      }
+    };
+
+    channel?.on("message.new", handleEvent);
+
+    return () => channel.off("message.new", handleEvent);
+  }, [channel]);
   console.log("sessionData", sessionData.session);
 
   let problemData = sessionData?.session?.problem
@@ -78,33 +121,33 @@ function SessionPage() {
     setIsRunning(false);
   };
 
-  // useEffect(() => {
-  //   if (!session || !userData || sessionData?.isLoading) return;
-  //   if (isHost || isParticipant) return;
-  //   let isMounted = true;
+  useEffect(() => {
+    if (!session || !userData || sessionData?.isLoading) return;
+    if (isHost || isParticipant) return;
+    let isMounted = true;
 
-  //   const joinSession = async () => {
-  //     try {
-  //       console.log("join session inside");
+    const joinSession = async () => {
+      try {
+        console.log("join session inside");
 
-  //       const data = await sessionApi.joinSession(id);
-  //       if (!isMounted) return;
+        const data = await sessionApi.joinSession(id);
+        if (!isMounted) return;
 
-  //       console.log("session joined data", data);
-  //       // setSessionData({ isLoading: false, session: data.data });
-  //     } catch (error) {
-  //       if (!isMounted) return;
-  //       toast.error("Failed to join session");
-  //       console.error("Error joining session", error);
-  //     }
-  //   };
-  //   joinSession();
-  //   return () => {
-  //     isMounted = false;
-  //   };
+        console.log("session joined data", data);
+        // setSessionData({ isLoading: false, session: data.data });
+      } catch (error) {
+        if (!isMounted) return;
+        toast.error("Failed to join session");
+        console.error("Error joining session", error);
+      }
+    };
+    joinSession();
+    return () => {
+      isMounted = false;
+    };
 
-  //   // remove the joinSessionMutation, refetch from dependencies to avoid infinite loop
-  // }, [session, userData, isHost, isParticipant, id]);
+    // remove the joinSessionMutation, refetch from dependencies to avoid infinite loop
+  }, [session, userData, isHost, isParticipant, id]);
 
   useEffect(() => {
     if (!session || sessionData?.isLoading) return;
@@ -147,6 +190,7 @@ function SessionPage() {
                       <div>
                         <h1 className="text-3xl font-bold text-base-content">
                           {session?.problem || "Loading..."}
+                          <button onClick={senMessage}> chekc data use</button>
                         </h1>
                         {problemData?.category && (
                           <p className="text-base-content/60 mt-1">

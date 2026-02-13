@@ -53,7 +53,7 @@ function Dashboard() {
     console.log("check", isHost);
     return isHost;
   };
-  console.log("first");
+
   useEffect(() => {
     const fetchData = async () => {
       try {
