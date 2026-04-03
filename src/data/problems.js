@@ -80,7 +80,9 @@ class Solution {
     category: "String • Two Pointers",
     description: {
       text: "Write a function that reverses a string. The input string is given as an array of characters s.",
-      notes: ["You must do this by modifying the input array in-place with O(1) extra memory."],
+      notes: [
+        "You must do this by modifying the input array in-place with O(1) extra memory.",
+      ],
     },
     examples: [
       {
@@ -152,7 +154,9 @@ class Solution {
     category: "String • Two Pointers",
     description: {
       text: "A phrase is a palindrome if, after converting all uppercase letters into lowercase letters and removing all non-alphanumeric characters, it reads the same forward and backward. Alphanumeric characters include letters and numbers.",
-      notes: ["Given a string s, return true if it is a palindrome, or false otherwise."],
+      notes: [
+        "Given a string s, return true if it is a palindrome, or false otherwise.",
+      ],
     },
     examples: [
       {
@@ -172,7 +176,10 @@ class Solution {
           's is an empty string "" after removing non-alphanumeric characters. Since an empty string reads the same forward and backward, it is a palindrome.',
       },
     ],
-    constraints: ["1 ≤ s.length ≤ 2 * 10⁵", "s consists only of printable ASCII characters"],
+    constraints: [
+      "1 ≤ s.length ≤ 2 * 10⁵",
+      "s consists only of printable ASCII characters",
+    ],
     starterCode: {
       javascript: `function isPalindrome(s) {
   // Write your solution here
@@ -339,6 +346,173 @@ print(maxArea([1,1]))  # Expected: 1`,
       java: "49\n1",
     },
   },
+
+  "contains-duplicate": {
+    id: "contains-duplicate",
+    title: "Contains Duplicate",
+    difficulty: "Easy",
+    category: "Array • Hash Set",
+
+    description: {
+      text: "Given an integer array nums, return true if any value appears at least twice in the array.",
+      notes: ["Return false if all elements are unique."],
+    },
+
+    examples: [
+      { input: "nums = [1,2,3,1]", output: "true" },
+      { input: "nums = [1,2,3,4]", output: "false" },
+    ],
+
+    constraints: ["1 ≤ nums.length ≤ 10⁵"],
+
+    starterCode: {
+      javascript: `function containsDuplicate(nums) {
+  // Write your solution here
+}
+
+// Test cases
+console.log(containsDuplicate([1,2,3,1])); // true
+console.log(containsDuplicate([1,2,3,4])); // false`,
+
+      java: `import java.util.*;
+
+class Solution {
+    public static boolean containsDuplicate(int[] nums) {
+        // Write your solution here
+        return false;
+    }
+
+    public static void main(String[] args) {
+        System.out.println(containsDuplicate(new int[]{1,2,3,1})); // true
+        System.out.println(containsDuplicate(new int[]{1,2,3,4})); // false
+    }
+}`,
+    },
+
+    testCases: {
+      javascript: [
+        { input: [[1, 2, 3, 1]], output: true },
+        { input: [[1, 2, 3, 4]], output: false },
+      ],
+      java: [
+        { input: [[1, 2, 3, 1]], output: true },
+        { input: [[1, 2, 3, 4]], output: false },
+      ],
+    },
+
+    expectedOutput: {
+      javascript: "true\nfalse",
+      java: "true\nfalse",
+    },
+  },
+  "valid-anagram": {
+  id: "valid-anagram",
+  title: "Valid Anagram",
+  difficulty: "Easy",
+  category: "String • Hash Table",
+
+  description: {
+    text: "Given two strings s and t, return true if t is an anagram of s.",
+    notes: []
+  },
+
+  examples: [
+    { input: 's = "anagram", t = "nagaram"', output: "true" },
+    { input: 's = "rat", t = "car"', output: "false" }
+  ],
+
+  starterCode: {
+    javascript: `function isAnagram(s, t) {
+  // Write your solution here
+}
+
+console.log(isAnagram("anagram", "nagaram")); // true
+console.log(isAnagram("rat", "car")); // false`,
+    
+    java: `import java.util.*;
+
+class Solution {
+    public static boolean isAnagram(String s, String t) {
+        // Write your solution here
+        return false;
+    }
+
+    public static void main(String[] args) {
+        System.out.println(isAnagram("anagram", "nagaram")); // true
+        System.out.println(isAnagram("rat", "car")); // false
+    }
+}`
+  },
+
+  testCases: {
+    javascript: [
+      { input: ["anagram", "nagaram"], output: true },
+      { input: ["rat", "car"], output: false }
+    ],
+    java: [
+      { input: ["anagram", "nagaram"], output: true },
+      { input: ["rat", "car"], output: false }
+    ]
+  },
+
+  expectedOutput: {
+    javascript: "true\nfalse",
+    java: "true\nfalse"
+  }
+},
+"move-zeroes": {
+  id: "move-zeroes",
+  title: "Move Zeroes",
+  difficulty: "Easy",
+  category: "Array • Two Pointers",
+
+  description: {
+    text: "Move all zeroes to the end while maintaining the order of non-zero elements.",
+    notes: ["Modify array in-place."]
+  },
+
+  examples: [
+    { input: "nums = [0,1,0,3,12]", output: "[1,3,12,0,0]" }
+  ],
+
+  starterCode: {
+    javascript: `function moveZeroes(nums) {
+  // Write your solution here
+}
+
+let arr = [0,1,0,3,12];
+moveZeroes(arr);
+console.log(arr); // [1,3,12,0,0]`,
+    
+    java: `import java.util.*;
+
+class Solution {
+    public static void moveZeroes(int[] nums) {
+        // Write your solution here
+    }
+
+    public static void main(String[] args) {
+        int[] arr = {0,1,0,3,12};
+        moveZeroes(arr);
+        System.out.println(Arrays.toString(arr)); // [1,3,12,0,0]
+    }
+}`
+  },
+
+  testCases: {
+    javascript: [
+      { input: [[0,1,0,3,12]], output: [1,3,12,0,0] }
+    ],
+    java: [
+      { input: [[0,1,0,3,12]], output: [1,3,12,0,0] }
+    ]
+  },
+
+  expectedOutput: {
+    javascript: "[1,3,12,0,0]",
+    java: "[1, 3, 12, 0, 0]"
+  }
+}
 };
 
 export const LANGUAGE_CONFIG = {
@@ -347,11 +521,7 @@ export const LANGUAGE_CONFIG = {
     icon: "/javascript.png",
     monacoLang: "javascript",
   },
-  python: {
-    name: "Python",
-    icon: "/python.png",
-    monacoLang: "python",
-  },
+
   java: {
     name: "Java",
     icon: "/java.png",

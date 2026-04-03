@@ -22,7 +22,7 @@ function ProblemPage() {
   const [isRunning, setIsRunning] = useState(false);
 
   const currentProblem = PROBLEMS[currentProblemId];
-  console.log("currentProblem", currentProblem);
+  // console.log("currentProblem", currentProblem);
   const handleProblemChange = (newProblemId) => {
     navigate(`/problem/${newProblemId}`);
   };
@@ -72,6 +72,7 @@ function ProblemPage() {
   };
 
   const handleRunCode = async () => {
+    console.log(code)
     setIsRunning(true);
     setOutput(null);
 
