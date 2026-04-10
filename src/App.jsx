@@ -1,6 +1,6 @@
 import "./App.css";
 
-import { useContext, useState } from "react";
+import { useContext} from "react";
 import { Navigate, Route, Routes } from "react-router";
 import HomePage from "./pages/HomePages.jsx";
 import Navbar from "./components/Navbar.jsx";
@@ -10,6 +10,7 @@ import ProblemsPage from "./pages/ProblemsPage.jsx";
 import ProblemPage from "./pages/ProblemPage.jsx";
 import DashboardPage from "./pages/Dashboard.jsx";
 import SessionPage from "./pages/SessionPage.jsx";
+import TestPage from "./pages/TestPage.jsx";
 
 function App() {
   const { userData } = useContext(myContext);
@@ -38,6 +39,10 @@ function App() {
         <Route
           path="/session/:id"
           element={userData ? <SessionPage /> : <Navigate to={"/"} />}
+        />
+         <Route
+          path="/test"
+          element={userData ? <TestPage /> : <Navigate to={"/"} />}
         />
       </Routes>
 
