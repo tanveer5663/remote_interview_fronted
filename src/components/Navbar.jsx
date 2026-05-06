@@ -79,8 +79,9 @@ function Navbar({ data }) {
   const logout = async () => {
     try {
       await authApi.logout();
+      setUserData(null);
 
-      window.location.href = "/"; // Redirect to home page after logout
+      ; // Redirect to home page after logout
     } catch (error) {
       console.error("Error during logout:", error);
     }
